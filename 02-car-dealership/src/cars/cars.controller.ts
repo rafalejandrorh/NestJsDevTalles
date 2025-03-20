@@ -23,11 +23,7 @@ export class CarsController {
     // Add the ValidationPipe to the function
     // @UsePipes(ValidationPipe)
     createCar(@Body() createCarDto: CreateCarDto) {
-        return {
-            ok: true,
-            method: 'POST',
-            body: createCarDto
-        }
+        return this.carsService.create(createCarDto);
     }
 
     @Patch(':id')
