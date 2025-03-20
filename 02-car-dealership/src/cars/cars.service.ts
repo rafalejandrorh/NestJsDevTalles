@@ -48,7 +48,6 @@ export class CarsService {
   update(id: string, updateCarDto: UpdateCarDto) {
 
     if(updateCarDto.id && updateCarDto.id !== id) throw new BadRequestException(`Car id is not valid inside body`);
-
     let carDB = this.findOneById(id);
     this.cars = this.cars.map(car => {
         if(car.id === id) {
