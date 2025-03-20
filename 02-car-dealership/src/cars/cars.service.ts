@@ -52,8 +52,8 @@ export class CarsService {
     let carDB = this.findOneById(id);
     this.cars = this.cars.map(car => {
         if(car.id === id) {
-            carDB = {...carDB, ...updateCarDto, id};
-            return carDB;
+          carDB = {...carDB, ...updateCarDto, id};
+          return carDB;
         }
         return car;
     });
