@@ -25,13 +25,7 @@ export class PokemonService {
       return await this.pokemonModel.create(createPokemonDto);
 
     } catch (error) {
-      console.log(error);
-
-      if(error.code === 11000) {
-        throw new ConflictException(`Pokemon with name ${createPokemonDto.name} already exists`);
-      }
-
-      throw new InternalServerErrorException(`Can't create Pokemon`);
+      this.handleExceptions(error);
     }
 
   }
@@ -73,11 +67,28 @@ export class PokemonService {
       updatePokemonDto.name = updatePokemonDto.name.toLowerCase().trim(); // Normalize the name to lowercase and trim whitespace
     }
 
-    await pokemon.updateOne(updatePokemonDto, { new: true });
-    return { ...pokemon.toJSON(), ...updatePokemonDto };
+    try {
+      await pokemon.updateOne(updatePokemonDto, { new: true });
+      
+      return { ...pokemon.toJSON(), ...updatePokemonDto };
+    } catch (error) {
+      this.handleExceptions(error);
+    }
+
   }
 
   remove(id: number) {
     return `This action removes a #${id} pokemon`;
   }
+
+  private handleExceptions(error: any) {
+    console.log(error);
+
+    if(error.code === 11000) {
+      throw new ConflictException(`Pokemon already exists: ${JSON.stringify(error.keyValue)}`);
+    }
+
+    throw new InternalServerErrorException(`Can't create Pokemon`);
+  }
+
 }
