@@ -21,7 +21,9 @@ import { SeedModule } from './seed/seed.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI ?? 'mongodb://localhost:27017/mongo'),
+    MongooseModule.forRoot(process.env.MONGODB_URI ?? 'mongodb://localhost:27017/mongo', {
+      dbName: 'pokemonDB'
+    }),
     PokemonModule,
     CommonModule,
     SeedModule,
