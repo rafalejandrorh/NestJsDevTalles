@@ -9,4 +9,4 @@ services:
     volumes:
       - ./data/mongo:/data/db
     environment:
-      MONGODB_DATABASE: nest-pokemon
+      MONGODB_DATABASE: pokemonDB
