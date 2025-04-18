@@ -18,6 +18,11 @@ npm i / yarn install
 docker compose up -d
 ```
 
+5. Insertar Semillas en la Base de Datos
+```
+http://localhost:3000/api/seed
+```
+
 ## Stack Utilizado
 * Docker
 * MongoDB
