@@ -19,6 +19,14 @@ export class ProductsService {
     
     try {
       
+      // For this validation, we are going to use a method that is going to be called before the insert
+      // in the entity. This method is going to check if the slug is empty and if it is, it is going to create it.
+      // if(!createProductDto.slug) {
+      //   createProductDto.slug = createProductDto.title.replaceAll(' ', '_').replaceAll("'",'').toLowerCase();
+      // } else {
+      //   createProductDto.slug = createProductDto.slug.replaceAll(' ', '_').replaceAll("'",'').toLowerCase();
+      // }
+
       const product = this.productRepository.create(createProductDto);
       await this.productRepository.save(product);
       return product;
