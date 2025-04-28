@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvConfiguration } from './config/env.config';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { EnvConfiguration } from './config/env.config';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true, // Set to false in production
-    })
+    }),
+    ProductsModule
   ],
   controllers: [],
   providers: [],
