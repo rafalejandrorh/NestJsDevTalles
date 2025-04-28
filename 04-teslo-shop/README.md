@@ -4,12 +4,33 @@
 
 # Teslo API
 
-1. Iniciar Base de Datos
+1. Instalar NestJs CLI
+```
+npm i -g @nestjs/cli
+```
+
+2. Clonar el Proyecto
+
+3. Instalar TypeORM
+```
+npm install --save @nestjs/typeorm typeorm pg
+```
+
+4. Instalar Dependencias
+```
+npm i
+```
+
+5. Clonar el archivo __.env.example__ y renombrar a __.env__
+
+6. Actualizar las variables de entorno
+
+7. Iniciar Base de Datos
 ```
 docker compose up -d
 ```
 
-2. Instalar TypeORM
+8. Iniciar Proyecto
 ```
-npm install --save @nestjs/typeorm typeorm pg
+npm run start:dev
 ```
