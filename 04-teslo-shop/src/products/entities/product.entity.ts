@@ -25,7 +25,7 @@ export class Product {
     @Column('text', {
         unique: true,
     })
-    slug: number;
+    slug: string;
 
     @Column('int', {
         default: 0,
