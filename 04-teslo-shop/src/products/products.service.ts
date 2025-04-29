@@ -46,7 +46,6 @@ export class ProductsService {
   }
 
   findAll(paginationDto: PaginationDto) {
-
     const { limit = this.defaultLimit, offset = this.defaultOffset } = paginationDto;
     return this.productRepository.find({
       take: limit,
