@@ -7,41 +7,47 @@ export class Product {
     id: string;
 
     @Column('text', {
-        unique: true,
+      unique: true,
     })
     title: string;
 
     @Column({
-        type: 'text',
-        nullable: true,
+      type: 'text',
+      nullable: true,
     })
     description: string;
 
     @Column('float', {
-        default: 0,
+      default: 0,
     })
     price: number;
 
     @Column('text', {
-        unique: true,
+      unique: true,
     })
     slug: string;
 
     @Column('int', {
-        default: 0,
+      default: 0,
     })
     stock: number;
 
     @Column('text', {
-        array: true,
-        default: [],
+      array: true,
+      default: [],
     })
     sizes: string[];
 
     @Column('text')
     gender: string; // M | W | Unisex
 
-    // Tags and Images
+    @Column('text', {
+      array: true,
+      default: [],
+    })
+    tags: string[];
+
+    // Images
 
     @BeforeInsert()
     checkSlugInsert() {
@@ -58,5 +64,5 @@ export class Product {
       }
       this.slug = this.slug.replaceAll(' ', '_').replaceAll("'",'').toLowerCase();
     }
-    
+
 }
