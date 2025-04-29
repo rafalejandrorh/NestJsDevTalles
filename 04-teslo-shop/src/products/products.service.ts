@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { ConfigService } from '@nestjs/config';
 import { isUUID } from 'class-validator';
+import { ProductImage } from './entities';
 
 @Injectable()
 export class ProductsService {
@@ -17,8 +18,12 @@ export class ProductsService {
 
   constructor(
     private readonly configService: ConfigService,
+
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>,
   ) {
     this.defaultLimit = configService.getOrThrow<number>('pagination.limit');
     this.defaultOffset = this.configService.getOrThrow<number>('pagination.offset');
@@ -27,9 +32,14 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto) {
     
     try {
-      const product = this.productRepository.create(createProductDto);
+
+      const { images = [], ...productDetails } = createProductDto;
+      const product = this.productRepository.create({
+        ...productDetails,
+        images: images.map(image => this.productImageRepository.create({ url: image })),
+      });
       await this.productRepository.save(product);
-      return product;
+      return {...product, images: images};
 
     } catch (error) {
       this.handleException(error);
@@ -69,6 +79,7 @@ export class ProductsService {
       const product = await this.productRepository.preload({
         id: id,
         ...updateProductDto,
+        images: []
       });
   
       if(!product) throw new NotFoundException(`Product with id ${id} not found`);
