@@ -1,19 +1,27 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ProductsService {
 
   private readonly logger = new Logger('ProductsService');
+  private defaultLimit: number;
+  private defaultOffset: number;
 
   constructor(
+    private readonly configService: ConfigService,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {}
+  ) {
+    this.defaultLimit = configService.getOrThrow<number>('pagination.limit');
+    this.defaultOffset = this.configService.getOrThrow<number>('pagination.offset');
+  }
 
   async create(createProductDto: CreateProductDto) {
     
@@ -37,8 +45,13 @@ export class ProductsService {
 
   }
 
-  findAll() {
-    return this.productRepository.find();
+  findAll(paginationDto: PaginationDto) {
+
+    const { limit = this.defaultLimit, offset = this.defaultOffset } = paginationDto;
+    return this.productRepository.find({
+      take: limit,
+      skip: offset,
+    });
   }
 
   async findOne(id: string) {
