@@ -52,6 +52,9 @@ export class ProductsService {
     return this.productRepository.find({
       take: limit,
       skip: offset,
+      relations: {
+        images: true
+      },
     });
   }
 
