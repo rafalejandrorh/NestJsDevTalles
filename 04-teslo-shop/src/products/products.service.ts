@@ -117,7 +117,7 @@ export class ProductsService {
           image => this.productImageRepository.create({ url: image })
         );
       }
-      
+
       await queryRunner.manager.save(product);
       await queryRunner.commitTransaction();
       await queryRunner.release();
@@ -134,6 +134,17 @@ export class ProductsService {
   async remove(id: string) {
     const product = await this.findOne(id);
     await this.productRepository.remove(product);
+  }
+
+  async deleteAllProducts() {
+
+    try {
+      const query = this.productRepository.createQueryBuilder('product');
+      return await query.delete().where({}).execute();
+    } catch (error) {
+      this.handleException(error);
+    }
+    
   }
 
   private handleException(error: any) {
