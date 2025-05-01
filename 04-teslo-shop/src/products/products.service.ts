@@ -74,11 +74,21 @@ export class ProductsService {
       product = await queryBuilder.where(`UPPER(title) =:title or slug =:slug`, {
         title: term.toUpperCase(),
         slug: term.toLowerCase()
-      }).getOne();
+      })
+      .leftJoinAndSelect('product.images', 'images')
+      .getOne();
     }
 
     if(!product) throw new NotFoundException(`Product with ${term} not found`);
     return product;
+  }
+
+  async findOnePlain(term: string) {
+    const { images = [], ...rest } = await this.findOne(term);
+    return {
+      ...rest, 
+      images: images.map(image => image.url)
+    };
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
