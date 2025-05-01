@@ -13,5 +13,7 @@ import { Product, ProductImage } from './entities';
       ProductImage
     ])
   ],
+  exports: [ProductsService]
+
 })
 export class ProductsModule {}
