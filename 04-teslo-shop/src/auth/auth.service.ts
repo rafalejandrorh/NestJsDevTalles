@@ -46,7 +46,7 @@ export class AuthService {
       const { password, email } = loginUserDto;
       const user = await this.userRepository.findOne({
         where: { email },
-        select: { email:true, password: true}
+        select: { id:true, email:true, password: true}
       });
 
       if (!user) throw new UnauthorizedException('Credentials are not valid (email)');
@@ -57,7 +57,6 @@ export class AuthService {
         ...user,
         token: this.getJwtToken({ 
           id: user.id,
-          email: user.email,
           iat: Math.floor(Date.now() / 1000), // Current time in seconds since epoch
         })
       };
