@@ -6,6 +6,10 @@ export const EnvConfiguration = () => ({
     port: process.env.PORT || 3000,
     host: process.env.HOST_API || 'http://localhost:3000'
   },
+  jwt: {
+    secret: process.env.JWT_SECRET || 'default',
+    expiresIn: process.env.JWT_EXPIRES_IN || '60s'
+  },
   postgreSQL: {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 5432,
