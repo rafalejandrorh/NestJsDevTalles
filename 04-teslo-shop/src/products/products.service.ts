@@ -147,7 +147,7 @@ export class ProductsService {
     
   }
 
-  private handleException(error: any) {
+  private handleException(error: any): never {
     if(error.code === '23505') {
       this.logger.warn('Product already exists', error.detail);
       throw new BadRequestException('Product already exists');
