@@ -20,7 +20,7 @@ export class User {
     fullName: string;
 
     @Column('bool', {
-        default: false,
+        default: true,
     })
     isActive: boolean;
 
