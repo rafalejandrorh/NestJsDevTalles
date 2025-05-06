@@ -68,7 +68,7 @@ export class ProductsService {
 
   async findOne(term: string) {
 
-    let product: Product |null = null;
+    let product: Product | null = null;
 
     if(isUUID(term)) {
       product = await this.productRepository.findOneBy({id:term});
