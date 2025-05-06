@@ -40,7 +40,7 @@ export class SeedService {
     const seedUsers = initialData.users;
     const users: User[] = [];
     seedUsers.forEach( user => {
-      users.push(this.userRepository.create(user))
+      users.push(this.userRepository.create(user));
     });
     const dbUsers = await this.userRepository.save(seedUsers);
     return dbUsers[0];
