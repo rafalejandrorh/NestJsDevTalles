@@ -13,7 +13,7 @@ export class User {
     email: string;
 
     @Column('text', {
-        // select: false, // This will not be selected by default when querying the user
+        select: false, // This will not be selected by default when querying the user
     })
     password: string;
 

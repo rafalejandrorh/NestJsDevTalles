@@ -3,8 +3,9 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Auth } from 'src/auth/decorators';
+import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
+import { User } from 'src/auth/entities/user.entity';
 
 @Controller('products')
 // If Decorator stands here, it's apply all routes
@@ -16,8 +17,11 @@ export class ProductsController {
   // If Decorator stands here, it's apply only this route
   @Auth(ValidRoles.user)
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  create(
+    @Body() createProductDto: CreateProductDto,
+    @GetUser() user: User
+  ) {
+    return this.productsService.create(createProductDto, user);
   }
 
   @Get()
@@ -32,8 +36,12 @@ export class ProductsController {
 
   @Patch(':id')
   @Auth(ValidRoles.user)
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
+  update(
+    @Param('id', ParseUUIDPipe) id: string, 
+    @Body() updateProductDto: UpdateProductDto,
+    @GetUser() user: User
+  ) {
+    return this.productsService.update(id, updateProductDto, user);
   }
 
   @Delete(':id')
