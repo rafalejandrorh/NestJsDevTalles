@@ -24,7 +24,6 @@ async function bootstrap() {
     .setTitle('Teslo Shop')
     .setDescription('Teslo Shop API description')
     .setVersion('1.0')
-    .addTag('teslo')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
