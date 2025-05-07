@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { ValidRoles } from './interfaces';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -14,18 +15,29 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
+  @ApiResponse({ status: 201, description: 'User was registered', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   register(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ status: 200, description: 'Login successfull', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   login(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
 
   @Get('check-status')
   @Auth()
+  @ApiResponse({ status: 200, description: 'Login successfull', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   checkAuthStatus(@GetUser() user: User) {
     return this.authService.checkAuthStatus(user);
   }
@@ -69,6 +81,11 @@ export class AuthController {
 
   @Get('private3')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiResponse({ status: 200, description: 'Login successfull', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related.' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   privateRoute3(
     @GetUser() user: User
   ) {
