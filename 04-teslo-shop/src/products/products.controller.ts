@@ -24,6 +24,7 @@ export class ProductsController {
   @HttpCode(HttpStatus.CREATED)
   @ApiResponse({ status: 201, description: 'Product was created', type: Product })
   @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden. Token related.' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   create(
@@ -53,6 +54,7 @@ export class ProductsController {
   @Auth(ValidRoles.user)
   @ApiResponse({ status: 200, description: 'Product was updated', type: Product })
   @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden. Token related.' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   update(
@@ -68,6 +70,7 @@ export class ProductsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiResponse({ status: 204, description: 'Product was deleted' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden. Token related.' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
