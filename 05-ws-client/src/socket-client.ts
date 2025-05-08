@@ -9,18 +9,30 @@ export const connectToServer = () => {
 
 const addListeners = (socket: Socket) => {
 
-    const serverStatusLabel = document.querySelector('#server-status')!;
+  const serverStatusLabel = document.querySelector('#server-status')!;
+  const clientsUl = document.querySelector('#clients-ul')!;
 
-    socket.on('connect', () => {
-        serverStatusLabel.innerHTML = 'connected';
+  socket.on('connect', () => {
+    serverStatusLabel.innerHTML = 'connected';
+  });
+
+  socket.on('disconnect', () => {
+    serverStatusLabel.innerHTML = 'disconnect';
+  });
+
+  socket.on('clients-updated', (clients: string[]) => {
+    let clientsHtml = '';
+    clients.forEach(clientId => {
+      clientsHtml += `
+        <li>${clientId}</li>
+      `;
     });
 
-    socket.on('disconnect', () => {
-        serverStatusLabel.innerHTML = 'disconnect';
-    });
+    clientsUl.innerHTML = clientsHtml;
+  });
 
-    socket.on('message-from-server', (payload: {fullName: string, message: string}) => {
-        console.log(payload);
-    });
+  socket.on('message-from-server', (payload: {fullName: string, message: string}) => {
+    console.log(payload);
+  });
 
 }
