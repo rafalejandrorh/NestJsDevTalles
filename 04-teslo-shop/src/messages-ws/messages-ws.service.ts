@@ -25,9 +25,13 @@ export class MessagesWsService {
   ) {}
 
   async registerClient(client: Socket, userId: string) {
+
     const user = await this.userRepository.findOneBy({ id: userId });
     if(!user) throw new Error('User not found');
     if(!user.isActive) throw new Error('User not active');
+
+    this.checkUserConnection(user);
+
     this.connectedClients[client.id] = {
       socket: client,
       user: user
@@ -47,23 +51,14 @@ export class MessagesWsService {
     return this.connectedClients[socketId].user.fullName;
   }
 
-  create(createMessagesWDto: CreateMessagesWsDto) {
-    return 'This action adds a new messagesW';
+  private checkUserConnection(user: User) {
+    for (const clientId of Object.keys(this.connectedClients)) {
+      const connectedClient = this.connectedClients[clientId];
+      if (connectedClient.user.id === user.id) {
+        connectedClient.socket.disconnect();
+        break;
+      }
+    }
   }
 
-  findAll() {
-    return `This action returns all messagesWs`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} messagesW`;
-  }
-
-  update(id: number, updateMessagesWDto: UpdateMessagesWsDto) {
-    return `This action updates a #${id} messagesW`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} messagesW`;
-  }
 }

@@ -24,13 +24,13 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
 
     try {
       payload = this.jwtService.verify(token);
-      this.messagesWsService.registerClient(client, payload.id);
-      this.wss.emit('clients-updated', this.messagesWsService.getConnectedClients());  
+      this.messagesWsService.registerClient(client, payload.id);  
     } catch (error) {
       client.disconnect();
       return;
     }
 
+    this.wss.emit('clients-updated', this.messagesWsService.getConnectedClients());
   }
 
   handleDisconnect(client: Socket) {
@@ -41,7 +41,6 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
 
   @SubscribeMessage('message-from-client')
   onMessageFromClient(client: Socket, payload: CreateMessagesWsDto) {
-    console.log(payload);
 
     // Emit Only Client that send message
     // client.emit('message-from-server', {
@@ -60,27 +59,6 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
       fullName: this.messagesWsService.getUserFullName(client.id),
       message: payload.message || 'no message'
     });
-
-    return this.messagesWsService.create(payload);
   }
 
-  @SubscribeMessage('findAllMessagesWs')
-  findAll() {
-    return this.messagesWsService.findAll();
-  }
-
-  @SubscribeMessage('findOneMessagesWs')
-  findOne(@MessageBody() id: number) {
-    return this.messagesWsService.findOne(id);
-  }
-
-  @SubscribeMessage('updateMessagesWs')
-  update(@MessageBody() updateMessagesWDto: UpdateMessagesWsDto) {
-    return this.messagesWsService.update(updateMessagesWDto.id, updateMessagesWDto);
-  }
-
-  @SubscribeMessage('removeMessagesW')
-  remove(@MessageBody() id: number) {
-    return this.messagesWsService.remove(id);
-  }
 }
