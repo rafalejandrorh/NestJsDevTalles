@@ -16,6 +16,9 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
     console.log('Client connected:', client.id);
     this.messagesWsService.registerClient(client);
     this.wss.emit('clients-updated', this.messagesWsService.getConnectedClients());
+
+    // Join the Room
+    //client.join('ventas');
   }
 
   handleDisconnect(client: Socket) {
@@ -26,6 +29,26 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
 
   @SubscribeMessage('message-from-client')
   onMessageFromClient(client: Socket, payload: CreateMessagesWsDto) {
+    console.log(payload);
+
+    // Emit Only Client that send message
+    // client.emit('message-from-server', {
+    //   fullName: 'Talles',
+    //   message: payload.message || 'no message'
+    // });
+
+    // Emit Everyone except Client that send message
+    // client.broadcast.emit('message-from-server', {
+    //   fullName: 'Talles',
+    //   message: payload.message || 'no message'
+    // });
+
+    // Emit Everyone, include Client that send message
+    this.wss.emit('message-from-server', {
+      fullName: 'Talles',
+      message: payload.message || 'no message'
+    });
+
     return this.messagesWsService.create(payload);
   }
 
