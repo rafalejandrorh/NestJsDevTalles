@@ -24,14 +24,13 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
 
     try {
       payload = this.jwtService.verify(token);
-      console.log(payload);
-
+      this.messagesWsService.registerClient(client, payload.id);
+      this.wss.emit('clients-updated', this.messagesWsService.getConnectedClients());  
     } catch (error) {
       client.disconnect();
       return;
     }
-    // Join the Room
-    //client.join('ventas');
+
   }
 
   handleDisconnect(client: Socket) {
@@ -58,7 +57,7 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
 
     // Emit Everyone, include Client that send message
     this.wss.emit('message-from-server', {
-      fullName: 'Talles',
+      fullName: this.messagesWsService.getUserFullName(client.id),
       message: payload.message || 'no message'
     });
 
