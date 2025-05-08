@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import { Injectable } from '@nestjs/common';
-import { CreateMessagesWDto } from './dto/create-messages-w.dto';
-import { UpdateMessagesWDto } from './dto/update-messages-w.dto';
+import { CreateMessagesWsDto } from './dto/create-messages-ws.dto';
+import { UpdateMessagesWsDto } from './dto/update-messages-ws.dto';
 
 interface ConnectedClients {
   [id: string]: Socket;
@@ -25,7 +25,7 @@ export class MessagesWsService {
     return Object.keys(this.connectedClients);
   }
 
-  create(createMessagesWDto: CreateMessagesWDto) {
+  create(createMessagesWDto: CreateMessagesWsDto) {
     return 'This action adds a new messagesW';
   }
 
@@ -37,7 +37,7 @@ export class MessagesWsService {
     return `This action returns a #${id} messagesW`;
   }
 
-  update(id: number, updateMessagesWDto: UpdateMessagesWDto) {
+  update(id: number, updateMessagesWDto: UpdateMessagesWsDto) {
     return `This action updates a #${id} messagesW`;
   }
 

@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
-import { CreateMessagesWDto } from './dto/create-messages-w.dto';
-import { UpdateMessagesWDto } from './dto/update-messages-w.dto';
+import { CreateMessagesWsDto } from './dto/create-messages-ws.dto';
+import { UpdateMessagesWsDto } from './dto/update-messages-ws.dto';
 import { MessagesWsService } from './messages-ws.service';
 import { Server } from 'http';
 
@@ -24,9 +24,9 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
     this.wss.emit('clients-updated', this.messagesWsService.getConnectedClients());
   }
 
-  @SubscribeMessage('createMessagesWs')
-  create(@MessageBody() createMessagesWDto: CreateMessagesWDto) {
-    return this.messagesWsService.create(createMessagesWDto);
+  @SubscribeMessage('message-from-client')
+  onMessageFromClient(client: Socket, payload: CreateMessagesWsDto) {
+    return this.messagesWsService.create(payload);
   }
 
   @SubscribeMessage('findAllMessagesWs')
@@ -40,7 +40,7 @@ export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconne
   }
 
   @SubscribeMessage('updateMessagesWs')
-  update(@MessageBody() updateMessagesWDto: UpdateMessagesWDto) {
+  update(@MessageBody() updateMessagesWDto: UpdateMessagesWsDto) {
     return this.messagesWsService.update(updateMessagesWDto.id, updateMessagesWDto);
   }
 
