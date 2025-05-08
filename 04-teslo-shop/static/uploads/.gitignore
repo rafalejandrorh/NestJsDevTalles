@@ -1,0 +1,9 @@
+# Ignore all files in this directory
+/products
+
+# Format Files
+.png
+.svg
+.jpg
+.jpeg
+.gif
