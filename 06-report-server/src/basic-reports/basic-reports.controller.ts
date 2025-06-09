@@ -1,20 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { BasicReportsService } from './basic-reports.service';
-import { CreateBasicReportDto } from './dto/create-basic-report.dto';
-import { UpdateBasicReportDto } from './dto/update-basic-report.dto';
+import { Response } from 'express';
 
 @Controller('basic-reports')
 export class BasicReportsController {
   constructor(private readonly basicReportsService: BasicReportsService) {}
 
-  @Post()
-  create(@Body() createBasicReportDto: CreateBasicReportDto) {
-    return this.basicReportsService.create(createBasicReportDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.basicReportsService.findAll();
+  @Get('hello-world')
+  helloWorld(@Res() response: Response) {
+    const pdfDoc = this.basicReportsService.helloWorld();
+    response.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Hello World Report';
+    pdfDoc.pipe(response);
+    pdfDoc.end();
   }
 
   @Get(':id')
@@ -22,13 +20,4 @@ export class BasicReportsController {
     return this.basicReportsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBasicReportDto: UpdateBasicReportDto) {
-    return this.basicReportsService.update(+id, updateBasicReportDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.basicReportsService.remove(+id);
-  }
 }
