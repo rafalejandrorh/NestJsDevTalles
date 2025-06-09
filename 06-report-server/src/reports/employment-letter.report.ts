@@ -27,7 +27,7 @@ const styles: StyleDictionary = {
   }
 }
 
-export const getEmploymentLetterReport = () => {
+export const getEmploymentLetterReport = (): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     styles: styles,
     pageMargins: [40, 60, 40, 60],
