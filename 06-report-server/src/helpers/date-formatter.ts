@@ -6,7 +6,7 @@ export class DateFormatter {
     day: '2-digit',
   });
 
-  static forgetDDMMMMYYYYmat(date: Date): string {
+  static getDDMMMMYYYY(date: Date): string {
     return this.formatter.format(date);
   }
 

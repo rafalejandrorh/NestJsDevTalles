@@ -23,7 +23,7 @@ export const headerSection = (options: HeaderOptions): Content => {
   const headerSubtitle = subtitle ? { text: subtitle, style: 'subheader' } : '';
   const headerLogo: Content = showLogo ? logo : '';
   const headerDate: Content = showDate ? {
-    text: `${ DateFormatter.forgetDDMMMMYYYYmat(new Date()) }`,
+    text: `${ DateFormatter.getDDMMMMYYYY(new Date()) }`,
     alignment: 'right',
     margin: [0, 20, 20, 20]
   } : '';
