@@ -1,20 +1,16 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from 'generated/prisma';
-
-import PdfPrinter from 'pdfmake';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
-
-const fonts = {
-  Roboto: {
-    normal: 'fonts/Roboto-Regular.ttf',
-    bold: 'fonts/Roboto-Medium.ttf',
-    italics: 'fonts/Roboto-Italic.ttf',
-    bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-  }
-};
+import { PrinterService } from 'src/printer/printer.service';
+import { getHelloWorldReport } from 'src/reports';
 
 @Injectable()
 export class BasicReportsService extends PrismaClient implements OnModuleInit {
+
+  constructor(
+    private readonly printer: PrinterService
+  ) {
+    super();
+  }
 
   async onModuleInit() {
     await this.$connect();
@@ -22,13 +18,9 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
   }
 
   helloWorld() {
-    const printer = new PdfPrinter(fonts);
-    const docDefinition: TDocumentDefinitions = {
-      content: [
-        'Hola Mundo'
-      ]
-    }
-    return printer.createPdfKitDocument(docDefinition)
+    return this.printer.createPdf(getHelloWorldReport({
+      name: 'Rafael'
+    }));
   }
 
   findOne(id: number) {
