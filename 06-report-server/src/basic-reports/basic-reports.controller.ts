@@ -15,9 +15,13 @@ export class BasicReportsController {
     pdfDoc.end();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.basicReportsService.findOne(+id);
+  @Get('employment-letter')
+  employmentLetter(@Res() response: Response) {
+    const pdfDoc = this.basicReportsService.employmentLetter();
+    response.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Employment-Letter';
+    pdfDoc.pipe(response);
+    pdfDoc.end();
   }
 
 }
