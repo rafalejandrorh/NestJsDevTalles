@@ -1,4 +1,4 @@
 export * from './hello-world.report';
-export * from './employment-letter.report';
-export * from './employment-letter-by-id.report';
-export * from './countries-list.report';
+export * from './employments/employment-letter.report';
+export * from './employments/employment-letter-by-id.report';
+export * from './countries/countries-list.report';

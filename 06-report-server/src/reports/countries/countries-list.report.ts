@@ -1,7 +1,7 @@
 import type { TDocumentDefinitions } from "pdfmake/interfaces";
 import { countries as Country } from "generated/prisma";
-import { headerSection } from "./sections/header.section";
-import { footerSection } from "./sections/footer.section";
+import { headerSection } from "../sections/header.section";
+import { footerSection } from "../sections/footer.section";
 
 interface ReportOptions {
   title?: string;

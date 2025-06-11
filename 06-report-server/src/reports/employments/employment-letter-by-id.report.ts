@@ -1,5 +1,5 @@
 import type { StyleDictionary, TDocumentDefinitions } from "pdfmake/interfaces";
-import { headerSection } from "./sections/header.section";
+import { headerSection } from "../sections/header.section";
 import { DateFormatter } from "src/helpers";
 
 interface ReportValues {
