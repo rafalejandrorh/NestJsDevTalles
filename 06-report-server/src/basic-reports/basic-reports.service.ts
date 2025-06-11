@@ -39,10 +39,7 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
         work_schedule: true,
       }
     })
-
-    if(!employee) {
-      throw new NotFoundException(`Employee with ID ${employeeId} not found`);
-    }
+    if(!employee) throw new NotFoundException(`Employee with ID ${employeeId} not found`);
 
     return this.printer.createPdf(getEmploymentLetterByIdReport({
       employerName: 'Rafael Rivero',
