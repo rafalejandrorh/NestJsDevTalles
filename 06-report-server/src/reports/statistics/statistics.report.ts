@@ -1,6 +1,9 @@
 import { TDocumentDefinitions } from "pdfmake/interfaces";
-import { generateDonutChart } from "./donut.chart";
 import { headerSection } from "../sections/header.section";
+import { footerSection } from "../sections/footer.section";
+import { generateDonutChart } from "../charts/donut.chart";
+import { generatetLineChart } from "../charts/line.chart";
+
 
 interface TopCountry {
   country: string | null;
@@ -15,15 +18,25 @@ interface ReportOptions {
 
 export const getStatisticsReport = async (options: ReportOptions): Promise<TDocumentDefinitions> => {
   
-  const donutChart = await generateDonutChart({
-    entries: options.topCountries.map((c) => ({
-      label: c.country,
-      value: c.customers
-    })),
-    legend: {
-      position: 'left'
-    }
-  });
+  const [donutChart, lineChart] = await Promise.all([
+    generateDonutChart({
+      entries: options.topCountries.map((c) => ({
+        label: c.country,
+        value: c.customers
+      })),
+      legend: {
+        position: 'left'
+      }
+    }),
+    generatetLineChart({
+      entries: options.topCountries.map((c) => ({
+        label: c.country,
+        value: c.customers
+      })),
+      legend: {},
+      title: 'Movimiento de Inventario'
+    })
+  ])
 
   return {
     pageMargins: [40, 100, 40, 60],
@@ -33,25 +46,26 @@ export const getStatisticsReport = async (options: ReportOptions): Promise<TDocu
       showLogo: true,
       showDate: true
     }),
+    footer: footerSection,
     content: [
       {
         columns: [
           {
             stack: [
               {
-                text: 'Top 10 de Países con más Clientes',
+                text: '10 Países con más Clientes',
                 alignment: 'center',
                 margin: [0, 0, 0, 10]
               },
               {
                 image: donutChart,
-                width: 320
+                width: 300
               },
             ]
           },
           {
-            width: 'auto',
             layout: 'lightHorizontalLines',
+            width: 'auto',
             table: {
               headerRows: 1,
               widths: [100, 'auto'],
@@ -65,6 +79,11 @@ export const getStatisticsReport = async (options: ReportOptions): Promise<TDocu
             }
           }
         ]
+      },
+      {
+        image: lineChart,
+        width: 500,
+        margin: [0, 20]
       }
     ]
   }

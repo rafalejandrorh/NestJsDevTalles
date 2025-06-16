@@ -4,4 +4,4 @@ export * from './employments/employment-letter-by-id.report';
 export * from './countries/countries-list.report';
 export * from './orders/order-by-id.report';
 export * from './charts/basic-chart-svg.report';
-export * from './charts/statistics.report';
+export * from './statistics/statistics.report';
