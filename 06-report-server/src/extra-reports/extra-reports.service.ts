@@ -38,4 +38,28 @@ export class ExtraReportsService {
     return this.printer.createPdf(getPersonalizedReport()); 
   }
 
+  getCustomSizeReport() {
+    const doc = this.printer.createPdf({
+      pageSize: {
+        width: 150,
+        height: 300
+      },
+      content: [
+        {
+          qr: 'https://devtalles.com',
+          fit: 100,
+          alignment: 'center'
+        },
+        {
+          text: 'Reporte',
+          fontSize: 20,
+          alignment: 'center',
+          margin: [0, 20]
+        }
+      ]
+    });
+
+    return doc;
+  }
+
 }
