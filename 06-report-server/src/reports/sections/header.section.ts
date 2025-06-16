@@ -13,7 +13,8 @@ const currentDate: Column = {
   text: DateFormatter.getDDMMMMYYYY(new Date()),
   alignment: 'right',
   margin: [20, 30],
-  width: 150
+  width: 100,
+  fontSize: 12
 }
 
 interface HeaderOptions {
@@ -28,11 +29,9 @@ export const headerSection = (options: HeaderOptions): Content => {
   
   const headerLogo: Content = showLogo ? logo : '';
   const headerDate: Content = showDate ? currentDate : '';
-
   const headerSubTitle: Content = subtitle ? {
     text: subtitle ? subtitle : '',
     fontSize: 16,
-    bold: true,
     alignment: 'center',
     margin: [0, 2, 0, 0],
   } : '';
