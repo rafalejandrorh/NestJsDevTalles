@@ -13,8 +13,13 @@ export class ExtraReportsService {
   ) {}
 
   getHtmlReport() {
-    const html = fs.readFileSync('./src/reports/html/basic-01.html', 'utf-8');
-    const content = getHtmlContent(html);
+    //const html = fs.readFileSync('./src/reports/html/basic-01.html', 'utf-8');
+    // const html = fs.readFileSync('./src/reports/html/basic-02.html', 'utf-8');
+    const html = fs.readFileSync('./src/reports/html/basic-03.html', 'utf-8');
+    const content = getHtmlContent(html, {
+      client: 'Rafael Rivero',
+      title: 'Curso de NestJS'
+    });
     
     const docDefinition: TDocumentDefinitions = {
       pageMargins: [40, 110, 40, 60],
