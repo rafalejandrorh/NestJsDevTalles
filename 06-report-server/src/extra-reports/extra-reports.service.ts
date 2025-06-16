@@ -1,7 +1,9 @@
 import fs from 'fs';
 import { Injectable } from '@nestjs/common';
 import { PrinterService } from 'src/printer/printer.service';
-import { getHelloWorldReport } from 'src/reports';
+import { getHtmlContent } from 'src/helpers/html-to-pdf';
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { headerSection } from 'src/reports/sections/header.section';
 
 @Injectable()
 export class ExtraReportsService {
@@ -12,10 +14,18 @@ export class ExtraReportsService {
 
   getHtmlReport() {
     const html = fs.readFileSync('./src/reports/html/basic-01.html', 'utf-8');
+    const content = getHtmlContent(html);
     
-    return this.printer.createPdf(getHelloWorldReport({
-      name: 'Rafael'
-    }));
+    const docDefinition: TDocumentDefinitions = {
+      pageMargins: [40, 110, 40, 60],
+      header: headerSection({
+        title: 'HTML to PDFMake',
+        subtitle: 'Convertir HTML a PDFMake'
+      }),
+      content: content
+    }
+
+    return this.printer.createPdf(docDefinition);
   }
 
 }
