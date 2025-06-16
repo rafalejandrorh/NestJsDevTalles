@@ -4,6 +4,7 @@ import { PrinterService } from 'src/printer/printer.service';
 import { getHtmlContent } from 'src/helpers/html-to-pdf';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { headerSection } from 'src/reports/sections/header.section';
+import { getPersonalizedReport } from 'src/reports';
 
 @Injectable()
 export class ExtraReportsService {
@@ -31,6 +32,10 @@ export class ExtraReportsService {
     }
 
     return this.printer.createPdf(docDefinition);
+  }
+
+  getPersonalizedReport() {
+    return this.printer.createPdf(getPersonalizedReport()); 
   }
 
 }

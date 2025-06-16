@@ -15,4 +15,13 @@ export class ExtraReportsController {
     pdfDoc.end();
   }
 
+  @Get('personalized')
+  getPersonalizedReport(@Res() response: Response) {
+    const pdfDoc = this.extraReportsService.getPersonalizedReport();
+    response.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Personalized-Report';
+    pdfDoc.pipe(response);
+    pdfDoc.end();
+  }
+
 }
