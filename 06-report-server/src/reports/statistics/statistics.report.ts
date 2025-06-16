@@ -3,7 +3,7 @@ import { headerSection } from "../sections/header.section";
 import { footerSection } from "../sections/footer.section";
 import { generateDonutChart } from "../charts/donut.chart";
 import { generatetLineChart } from "../charts/line.chart";
-
+import { generateBarsChart } from "../charts/bars.chart";
 
 interface TopCountry {
   country: string | null;
@@ -18,7 +18,7 @@ interface ReportOptions {
 
 export const getStatisticsReport = async (options: ReportOptions): Promise<TDocumentDefinitions> => {
   
-  const [donutChart, lineChart] = await Promise.all([
+  const [donutChart, lineChart, barChart1, barChart2] = await Promise.all([
     generateDonutChart({
       entries: options.topCountries.map((c) => ({
         label: c.country,
@@ -35,7 +35,9 @@ export const getStatisticsReport = async (options: ReportOptions): Promise<TDocu
       })),
       legend: {},
       title: 'Movimiento de Inventario'
-    })
+    }),
+    generateBarsChart(),
+    generateBarsChart()
   ])
 
   return {
@@ -84,7 +86,20 @@ export const getStatisticsReport = async (options: ReportOptions): Promise<TDocu
         image: lineChart,
         width: 500,
         margin: [0, 20]
-      }
+      },
+      {
+        columnGap: 10,
+        columns: [
+          {
+            image: barChart1,
+            width: 250,
+          },
+          {
+            image: barChart2,
+            width: 250,
+          },
+        ],
+      },
     ]
   }
 
