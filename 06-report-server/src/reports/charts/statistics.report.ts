@@ -1,6 +1,6 @@
 import { TDocumentDefinitions } from "pdfmake/interfaces";
-import { title } from "process";
-import * as Utils from 'src/helpers/chart-utils';
+import { generateDonutChart } from "./donut.chart";
+import { headerSection } from "../sections/header.section";
 
 interface TopCountry {
   country: string | null;
@@ -13,52 +13,58 @@ interface ReportOptions {
   topCountries: TopCountry[];
 }
 
-const generateTopCountriesDonut = async (topCountries: TopCountry[]): Promise<string> => {
-  const data = {
-    labels: topCountries.map((country) => country.country),
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: topCountries.map((country) => country.customers),
-        //backgroundColor: Object.values(Utils.CHART_COLORS),
-      }
-    ]
-  };
-  
-  const config = {
-    type: 'doughnut',
-    data: data,
-    options: {
-      legend: {
-        position: 'left'
-      },
-      // title: {
-      //   display: true,
-      //   text: 'Top Countries',
-      // },
-      plugins: {
-        datalabels: {
-          color: 'white',
-          font: {
-            weight: 'bold',
-            size: 14
-          }
-        }
-      }
-    },
-  };
-
-  return Utils.chartJsToImage(config);
-};
-
 export const getStatisticsReport = async (options: ReportOptions): Promise<TDocumentDefinitions> => {
-  const donutChart = await generateTopCountriesDonut(options.topCountries);
+  
+  const donutChart = await generateDonutChart({
+    entries: options.topCountries.map((c) => ({
+      label: c.country,
+      value: c.customers
+    })),
+    legend: {
+      position: 'left'
+    }
+  });
 
   return {
+    pageMargins: [40, 100, 40, 60],
+    header: headerSection({
+      title: options.title ?? 'Estadísticas de Clientes',
+      subtitle: options.subTitle ?? 'Top 10 de Países con más Clientes',
+      showLogo: true,
+      showDate: true
+    }),
     content: [
       {
-        image: donutChart,
-        width: 500
+        columns: [
+          {
+            stack: [
+              {
+                text: 'Top 10 de Países con más Clientes',
+                alignment: 'center',
+                margin: [0, 0, 0, 10]
+              },
+              {
+                image: donutChart,
+                width: 320
+              },
+            ]
+          },
+          {
+            width: 'auto',
+            layout: 'lightHorizontalLines',
+            table: {
+              headerRows: 1,
+              widths: [100, 'auto'],
+              body: [
+                ['País', 'Clientes'],
+                ...options.topCountries.map((c) => [
+                  c.country ?? '',
+                  c.customers ?? ''
+                ])
+              ]
+            }
+          }
+        ]
       }
     ]
   }
