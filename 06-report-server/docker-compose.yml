@@ -6,7 +6,7 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=123456
-    restart: always
+    # restart: always
     ports:
       - "5434:5432"
 
@@ -21,4 +21,4 @@ services:
     environment:
       - PGADMIN_DEFAULT_PASSWORD=123456
       - PGADMIN_DEFAULT_EMAIL=rafalejandrorivero@gmail.com
-    restart: always
+    # restart: always
